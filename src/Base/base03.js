@@ -24,6 +24,18 @@ Base.extend = function(conf) {
 	}
 	klass.prototype.__proto__ = proto;
 
+	klass.prototype.base = function() {
+		if (typeof proto['init'] !== 'undefined') {
+			proto['init'].apply(proto, arguments);
+
+			for (var attr in proto) {
+				if (typeof proto[attr] != 'function') {
+					this[attr] = proto[attr];
+				}
+			}
+		}
+	};
+
 	klass.extend = Base.extend;
 
 	return klass;
@@ -40,7 +52,7 @@ var Person = Base.extend({
 
 var User = Person.extend({
 	constructor: function(name, password) {
-		this.name = name;
+		this.base(name);
 		this.password = password;
 	},
 	get_password: function() {
@@ -48,10 +60,20 @@ var User = Person.extend({
 	}
 });
 
+var Teacher = User.extend({
+	constructor: function(name) {
+		this.base(name, '123');
+	},
+	say_hello: function() {
+		return 'hello,' + this.get_name();
+	}
+});
+
 describe('Base', function() {
 	it('extend', function() {
-		var jobs = new User('jobs', '123');
+		var jobs = new Teacher('jobs');
 		assert.equal('jobs', jobs.get_name());
 		assert.equal('123', jobs.get_password());
+		assert.equal('hello,jobs', jobs.say_hello());
 	});
 });
