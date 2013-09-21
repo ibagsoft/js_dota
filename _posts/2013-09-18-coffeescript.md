@@ -1,8 +1,8 @@
 ---
 layout: post
-title: adobe3
+title: coffeescript
 tags: 类 继承 backbone
-description: adobe第三天课程总结
+description: coffeescript
 ---
 
 
