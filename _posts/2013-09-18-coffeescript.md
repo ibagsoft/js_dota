@@ -250,4 +250,121 @@ CoffeeScript与Ruby和Python一样，都采用`#`作为注释符号
 
 	o = Number(5)
 	print o.add(1,2,3,4,5)
+	
+	
+## ::
 
+John Resig在jQuery中将prototype简化为fn。
+Jeremy Ashkenas在CoffeeScript中则将它直接简化为了`::`
+
+	Boy = (@name) ->
+	Boy::sayHello = -> console.log "hello,#{@name}"
+	jobs = new Boy('jobs')
+	jobs.sayHello()
+	
+将其编译为JavaScript后，如下：
+
+	(function() {
+	  var Boy, jobs;
+
+	  Boy = function(name) {
+	    this.name = name;
+	  };
+
+	  Boy.prototype.sayHello = function() {
+	    return console.log("hello," + this.name);
+	  };
+
+	  jobs = new Boy('jobs');
+
+	  jobs.sayHello();
+
+	}).call(this);
+
+`::`可以认为是prototype的简化方式。如同`@`之于this。
+另外提一句`Boy = (@name) ->`等同于`Boy = (name) -> @name = name`
+
+## 类
+
+###  class
+
+JavaScript是基于原型的面向对象语言，因此并不像基于类的语言一样，具备直接支持类定义和方法定义等功能的语法。
+CoffeeScript模块基于类的语言，提供了`class`语法.
+
+	class Roach
+		constructor: ->
+			@isAlive = true
+			Roach.count++
+
+		breed: -> new Roach if @isAlive
+
+		die: ->
+			Roach.count-- if @isAlive
+			@isAlive = false
+
+		@count:0
+
+		@makeRoach: -> console.log ('Roach!' for i in [0...@count]).join(' ')
+
+	roach1 = new Roach
+	roach2 = roach1.breed()
+	roach3 = roach2.breed()
+	Roach.makeRoach()
+
+	roach3.die()
+	Roach.makeRoach()
+	
+不过这里的class实际上还是定义了一个函数对象；然后再为其定义原型方法：
+	
+	
+	Roach = ->
+		@isAlive = true
+		Roach.count++
+
+	Roach::breed = ->
+		new Roach if @isAlive
+
+	Roach::die = ->
+		@isAlive--
+		Roach.count--
+
+	Roach.count = 0
+
+	Roach.makeRoach = ->
+		console.log ('Roach!' for i in [0...@count]).join(' ')
+		
+### extends
+
+CoffeeScript中extends的实现手法与Jeremy Ashkenas在Backbone中的extend是一样的。主要有两种继承，一种原型链的继承方式，另一种则是属性复制。
+
+	class Pet
+		constructor: ->
+			@isHungry = true
+		eat:->@isHungry = false
+
+	class Dog extends Pet
+		eat:->
+			console.log '*crunch,crunch*'
+			super()
+		fetch:->
+			console.log 'Yip yip!'
+			@isHungry = true
+			
+### polymorphic
+
+可以使用instanceof关键字来检查传入的对象是否为指定类型
+
+	feed = (pet) ->
+		throw new Error('feed requires a Pet instance!') unless pet instanceof Pet
+		console.log pet.eat()
+		
+但instanceof实际采用的是JavaScript的instanceof，它并不是那么的靠谱。
+如果不使用instanceof检查，那就会变成著名的“鸭子类型”。
+
+## 优雅的CoffeeScript
+
+Jeremy Ashkenas设计CoffeeScript的本意就是在发挥JavaScript优势的同时，消除对JavaScript的不满。它借鉴了Ruby和Python中大量的优秀实现，达到了一种绝妙的平衡性。
+
+因为CoffeeScript的编译器是通过JavaScript编写的，编译结果也是JavaScript，因此只要有JavaScript引擎，CoffeeScript即可运行。借助于此优势，越来越多的应用开始引进CoffeeScript。
+
+我觉得网友@hooluupog的评价比较中肯："因为CoffeeScript本质还是js，所以js中的天生缺点(tooling,scale静态分析等等）它都无奈的继承了过来。Dart避免了这些，但也因此要取代js很难。"
