@@ -1,7 +1,7 @@
 ---
 layout: post
 title: coffeescript
-tags: 类 继承 backbone
+tags: function this class
 description: coffeescript
 ---
 
@@ -24,7 +24,7 @@ CoffeeScript的函数声明采用的是定义式函数
   	
 因此，在使用前必须先定义他们。
 
-### is
+### `is`
 
 	cube = (num) ->
 		console.log "you input #{arguments[0]}"
@@ -35,7 +35,7 @@ CoffeeScript的函数声明采用的是定义式函数
 	
 CoffeeScript中的is和==都会编译为Javascript中的===，无法使用如Javascript中==那样宽松的、强制类型转化的等于检查。
 
-### 向Ruby学习
+### 向`Ruby`学习
 
 从此处我们可以看到向Ruby学习的部分：
 
