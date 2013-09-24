@@ -1,0 +1,21 @@
+body{
+	padding: 10px;
+	margin: 0px auto;
+	width: 500px;
+	box-shadow: 2px 2px 1px #CAC9C9;
+	border-radius: 5px 5px 5px 5px;
+	background: #eeeeee;
+}
+h1{
+	text-align: center;
+	font-size: 36px;
+}
+input{
+	width: 480px;
+	font-size: 24px;
+}
+li{
+	list-style: none;
+	font-size: 24px;
+	padding: 15px;
+}

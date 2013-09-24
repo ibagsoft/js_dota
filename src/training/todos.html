@@ -1,0 +1,30 @@
+<html>
+<head>
+	<title>todos</title>
+	<link rel="stylesheet" href="todos.css">
+</head>
+<body>
+	<div id="todoapp">
+		<header>
+			<h1>todos</h1>
+			<input type="text" id="new_todo">
+		</header>
+		<section>
+			<ul id="todo_list"></ul>
+		</section>
+		<footer>
+			<div>Design by ibagsoft</div>
+		</footer>
+	</div>
+	<script src='libs/jquery.js'></script>
+	<script src='libs/underscore.js'></script>
+	<script src='libs/backbone.js'></script>
+	<script src='ora.js'></script>
+	<script src='todos.js'></script>
+	<script type='text/template' id='todo_tmpl'>
+		<li>
+			<%=title%>
+		</li>
+	</script>
+</body>
+</html>
